@@ -8,6 +8,16 @@ public class Util {
     InetAddress ipRecep; //adresseIP de la derniere personne a avoir envoyé un dp
     int portRecep; //port de la derniere personne a avoir envoyé un dp
 
+    static int PORT_SERVER=1500;
+    static final int  RQ_DEFAULT=0;
+    static final int RQ_CONNEXION_DEMANDE_TO_SERVER=1;
+    static final int RQ_CONNEXION_DEMANDE_TO_HOST=2;
+    static final int RQ_CONNEXION_ACCEPTE_SERVER=3;
+    static final int RQ_CONNEXION_ACCEPTE_HOST=4;
+    static final int RQ_CONNEXION_REFUSEE=5;
+    static final int RQ_ADD_ADRESS=6;
+    static final int RQ_COM_MESSAGE=7;
+
     protected Util(){
         try {
             ds=new DatagramSocket();
@@ -52,11 +62,18 @@ public class Util {
     }
 
     protected DatagramPacket ecouter(byte[] data){
+        return ecouter(data,false);
+    }
+
+    protected DatagramPacket ecouter(byte[] data,boolean printData){
         DatagramPacket dp=new DatagramPacket(data,data.length);
         try {
             ds.receive(dp);
-//            String str = new String(data, StandardCharsets.UTF_8);
-//            System.out.println("data:"+str);
+            if(printData){
+                String str = new String(data, StandardCharsets.UTF_8);
+                str.substring(0,dp.getLength());
+                System.out.println("data:"+str);
+            }
             ipRecep=dp.getAddress();
             portRecep=dp.getPort();
             return dp;
@@ -84,6 +101,10 @@ public class Util {
         }
 //        System.out.println("\n Fin des ports occupés. \n  ports libres:");
         return res;
+    }
+
+    protected int getPortEcoute(){
+        return ds.getPort();
     }
 
 
