@@ -44,7 +44,9 @@ public class Serveur extends Util {
                     personnesEnAttente.put(code,adresseHote);
                     message=RQ_CONNEXION_ACCEPTE_SERVER+" création de la salle reussie, votre correspondant doit desormais se connecter avec votre code";
                 }
+                System.out.println(dp.getAddress()+"  "+dp.getPort());
                 envoyer(message,dp.getAddress(),dp.getPort());
+
             }
        }
     }

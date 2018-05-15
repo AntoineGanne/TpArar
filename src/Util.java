@@ -43,7 +43,6 @@ public class Util {
     }
 
     protected void envoyer(String data,InetAddress ip, int port){
-        InetAddress a;
         DatagramPacket dp;
         try {
             dp = new DatagramPacket(data.getBytes(),data.length(),ip,port);
@@ -71,7 +70,7 @@ public class Util {
             ds.receive(dp);
             if(printData){
                 String str = new String(data, StandardCharsets.UTF_8);
-                str.substring(0,dp.getLength());
+                str=str.substring(0,dp.getLength());
                 System.out.println("data:"+str);
             }
             ipRecep=dp.getAddress();
@@ -104,7 +103,7 @@ public class Util {
     }
 
     protected int getPortEcoute(){
-        return ds.getPort();
+        return ds.getLocalPort();
     }
 
 

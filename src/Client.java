@@ -88,7 +88,7 @@ public class Client extends Util {
 
     private void initialisationCom(String nomSalle){
         int portEcoute=getPortEcoute();
-        communication=new Com(portEcoute,nomSalle);
+        communication=new Com(ds,nomSalle);
 
     }
 }

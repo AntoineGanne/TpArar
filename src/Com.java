@@ -1,4 +1,5 @@
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ public class Com extends Util implements Runnable{
 
     private String nomSalle;
 
-    public Com(int portecoute,String nomSalleInput){
-        super(portecoute);
+    public Com(DatagramSocket dsInput, String nomSalleInput){
+        ds=dsInput;
         adresses=new ArrayList<>();
         nomSalle=nomSalleInput;
-        new Thread().run();
+        new Thread().start();
     }
 
     @Override
