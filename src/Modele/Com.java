@@ -1,3 +1,5 @@
+package Modele;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -8,6 +10,7 @@ import java.util.Scanner;
 
 public class Com extends Util implements Runnable{
     private ArrayList<AdresseComplete> adresses;
+    private ArrayList<String> messages;
 
     public String getNomSalle() {
         return nomSalle;
@@ -18,14 +21,10 @@ public class Com extends Util implements Runnable{
     public Com(){
         super();
         adresses=new ArrayList<>();
+        messages=new ArrayList<>();
     }
 
-    public Com(DatagramSocket dsInput, String nomSalleInput){
-        ds=dsInput;
-        adresses=new ArrayList<>();
-        nomSalle=nomSalleInput;
-        new Thread().start();
-    }
+
 
     @Override
     public void run() {
@@ -33,7 +32,7 @@ public class Com extends Util implements Runnable{
         DatagramPacket dp;
         byte[] data=new byte[100];
         while(true){
-            dp=ecouter(data,true);
+            dp=ecouter(data,false);
             String str = new String(dp.getData(), StandardCharsets.UTF_8);
             str=str.substring(0,dp.getLength());
             Scanner scan=new Scanner(str);
@@ -53,12 +52,15 @@ public class Com extends Util implements Runnable{
                 case RQ_COM_MESSAGE:
                     String message= scan.next();
                     System.out.println(message);
+                    messages.add(message);
                     break;
             }
         }
     }
 
     public void sendAll(String message){
+        message=RQ_COM_MESSAGE+" "+message;
+        messages.add(message);
         for(AdresseComplete adresse:
                 adresses){
             envoyer(message,adresse.ip,adresse.port);
@@ -119,8 +121,11 @@ public class Com extends Util implements Runnable{
         envoyer(requete,ipHote,portHote);
     }
 
-
-
+    public String[] derniersMessages(int nbMessages){
+        int l=messages.size();
+        String[] resultat=(String[])(messages.subList(l-nbMessages,l)).toArray();  //créa un tableau des derniers messages
+        return resultat;
+    }
 
 
 }

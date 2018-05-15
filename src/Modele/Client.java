@@ -1,20 +1,25 @@
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
+package Modele;
+
+import javafx.beans.InvalidationListener;
+
+import java.util.HashMap;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class Client extends Util {
+public class Client extends Observable {
     Scanner scannerConsole;
-    Com communication;
-    Client(){
+    HashMap<String , Com> salles;
+    Com currentCommunication;
+
+    public Client(){
         scannerConsole=new Scanner(System.in);
-        communication=new Com();
+        currentCommunication=new Com();
     }
 
     public static void main(String[] args) {
         Client c=new Client();
-        c.run("127.0.0.1");
+        String ip="192.168.43.93";     //"127.0.0.1";
+        c.run(ip);
 
     }
 
@@ -25,16 +30,18 @@ public class Client extends Util {
         envoyer("hello serveur RX302",ip,PORT_SERVER);
         byte[] data=new byte[100];
         DatagramPacket dp =ecouter(data);
-        System.out.println("Serveur RX302 ready:@IP "+dp.getAddress()+", port:" + dp.getPort());
+        System.out.println("Modele.Serveur RX302 ready:@IP "+dp.getAddress()+", port:" + dp.getPort());
 
         String message=scannerConsole.nextLine();
         repondre(message);
         */
-        connexion(ip);
-        while(true){
-            String message = scannerConsole.nextLine();
-            communication.sendAll(RQ_COM_MESSAGE+" "+message);
-        }
+
+
+//        connexion(ip);
+//        while(true){
+//            String message = scannerConsole.nextLine();
+//            currentCommunication.sendAll(message);
+//        }
     }
 
     public void connexion(){
@@ -46,7 +53,14 @@ public class Client extends Util {
     public void connexion(String ipServer){
         System.out.println("entrez le nom de la conversation");
         String nomSalle=scannerConsole.nextLine();
+        Com communication=new Com();
         communication.connexion(ipServer,nomSalle);
+
+        salles.put(nomSalle,communication);
+    }
+
+    public String[] getDerniersMessages(String nomSalle, int nbMessages){
+        return salles.get(nomSalle).derniersMessages(nbMessages);
     }
 
 

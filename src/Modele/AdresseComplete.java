@@ -1,3 +1,5 @@
+package Modele;
+
 import java.net.InetAddress;
 
 public class AdresseComplete {
@@ -11,7 +13,7 @@ public class AdresseComplete {
 
     @Override
     public String toString() {
-        return "AdresseComplete{" +
+        return "Modele.AdresseComplete{" +
                 "ip=" + ip +
                 ", port=" + port +
                 '}';
