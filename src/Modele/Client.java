@@ -13,6 +13,7 @@ public class Client extends Observable {
 
     public Client(){
         scannerConsole=new Scanner(System.in);
+        salles=new HashMap<>(0);
         currentCommunication=new Com();
     }
 
@@ -53,6 +54,10 @@ public class Client extends Observable {
     public void connexion(String ipServer){
         System.out.println("entrez le nom de la conversation");
         String nomSalle=scannerConsole.nextLine();
+        connexion(ipServer,nomSalle);
+    }
+
+    public void connexion(String ipServer,String nomSalle){
         Com communication=new Com();
         communication.connexion(ipServer,nomSalle);
 
@@ -60,8 +65,20 @@ public class Client extends Observable {
     }
 
     public String[] getDerniersMessages(String nomSalle, int nbMessages){
-        return salles.get(nomSalle).derniersMessages(nbMessages);
+        //return salles.get(nomSalle).derniersMessages(nbMessages);
+        return currentCommunication.derniersMessages(nbMessages);
     }
 
+    public void envoyerMessage(String message){
+        currentCommunication.sendAll(message);
+//        setChanged();
+//        notifyAll();
+    }
+
+    public void setCurrentCommunication(String nomSalle){
+        currentCommunication=salles.get(nomSalle);
+//        setChanged();
+//        notifyAll();
+    }
 
 }

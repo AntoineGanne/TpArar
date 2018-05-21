@@ -123,8 +123,14 @@ public class Com extends Util implements Runnable{
 
     public String[] derniersMessages(int nbMessages){
         int l=messages.size();
-        String[] resultat=(String[])(messages.subList(l-nbMessages,l)).toArray();  //créa un tableau des derniers messages
-        return resultat;
+
+        if(l<=nbMessages){
+            return messages.toArray(new String[0]);
+        }
+        else{
+            String[] resultat= (messages.subList(l - nbMessages, l)).toArray(new String[0]);  //crée un tableau des derniers messages
+            return resultat;
+        }
     }
 
 
