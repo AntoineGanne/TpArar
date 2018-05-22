@@ -19,7 +19,7 @@ public class Client extends Observable {
 
     public static void main(String[] args) {
         Client c=new Client();
-        String ip="192.168.43.93";     //"127.0.0.1";
+        String ip="127.0.0.1";
         c.run(ip);
 
     }
@@ -38,11 +38,11 @@ public class Client extends Observable {
         */
 
 
-//        connexion(ip);
-//        while(true){
-//            String message = scannerConsole.nextLine();
-//            currentCommunication.sendAll(message);
-//        }
+        connexion(ip);
+        while(true){
+            String message = scannerConsole.nextLine();
+            currentCommunication.sendAll(message);
+        }
     }
 
     public void connexion(){

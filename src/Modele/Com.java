@@ -32,7 +32,7 @@ public class Com extends Util implements Runnable{
         DatagramPacket dp;
         byte[] data=new byte[100];
         while(true){
-            dp=ecouter(data,false);
+            dp=ecouter(data,true);
             String str = new String(dp.getData(), StandardCharsets.UTF_8);
             str=str.substring(0,dp.getLength());
             Scanner scan=new Scanner(str);
@@ -41,8 +41,8 @@ public class Com extends Util implements Runnable{
                 case RQ_CONNEXION_DEMANDE_TO_HOST:
                     InetAddress ipRecue=dp.getAddress();
                     int portRecue= dp.getPort();
-                    System.out.println("Accepter connexion a "+nomSalle+" au client "
-                            +"{ ip="+ipRecue+" ,port="+portRecue);
+//                    System.out.println("Accepter connexion a "+nomSalle+" au client "
+//                            +"{ ip="+ipRecue+" ,port="+portRecue);
 
                 case RQ_ADD_ADRESS:
                     addAdresse(dp);
@@ -59,8 +59,9 @@ public class Com extends Util implements Runnable{
     }
 
     public void sendAll(String message){
+        messages.add(message); //enregistre le message
+
         message=RQ_COM_MESSAGE+" "+message;
-        messages.add(message);
         for(AdresseComplete adresse:
                 adresses){
             envoyer(message,adresse.ip,adresse.port);

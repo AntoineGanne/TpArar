@@ -20,7 +20,7 @@ import java.util.Observer;
 
 public class ClientFX extends Application implements Observer {
     Client modeleClient;
-    TextFlow zoneMessages;
+   // TextFlow zoneMessages;
 
     private String NomSalleActuelle;
 
@@ -36,6 +36,8 @@ public class ClientFX extends Application implements Observer {
     TextArea textareaIpServeur;
     TextArea textAreaEnterMessage;
 
+    GridPane gpZoneMessage;
+
     Button[] boutonsSalles;
     Button btnEnvoyerMessage;
     Button btnMiseAJour;
@@ -50,7 +52,6 @@ public class ClientFX extends Application implements Observer {
     @Override
     public void start(Stage primaryStage) {
         modeleClient=new Client();
-        modeleClient.run("127.0.0.1");
 
         //Fonts
         fontTitres=new Font("Arial",20);
@@ -59,10 +60,11 @@ public class ClientFX extends Application implements Observer {
         //zones
         Label pasDeMessage=new Label("Pas de message");
         pasDeMessage.setFont(fontTitres);
-        zoneMessages=new TextFlow(pasDeMessage);
+       // zoneMessages=new TextFlow(pasDeMessage);
+        gpZoneMessage=new GridPane();
 
-        border=new BorderPane(zoneMessages);
-        border.setCenter(zoneMessages);
+        border=new BorderPane();
+        border.setCenter(gpZoneMessage);
 
         gpZoneHaute=new GridPane();
 
@@ -81,7 +83,6 @@ public class ClientFX extends Application implements Observer {
         border.setTop(gpZoneHaute);
 
 
-        zoneMessages=new TextFlow();
 
         //////////// Controlleurs
         gpBoutonsSalles =new GridPane();
@@ -160,11 +161,11 @@ public class ClientFX extends Application implements Observer {
         String[] messages=modeleClient.getDerniersMessages(NomSalleActuelle,5);
         Label[] labels=new Label[messages.length];
         for(int i=0;i<messages.length;i++){
-            Label mess=new Label(messages[i]);
+            Label mess=new Label(messages[i] + '\n');
             labels[i]=mess;
-            zoneMessages=new TextFlow(labels);
+            gpZoneMessage.add(mess,0,i);
         }
-        border.setCenter(zoneMessages);
+//        border.setCenter(zoneMessages);
     }
 
 
