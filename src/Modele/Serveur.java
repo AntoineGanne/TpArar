@@ -1,6 +1,7 @@
+package Modele;
+
 import java.net.DatagramPacket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ public class Serveur extends Util {
     private HashMap<String, AdresseComplete> personnesEnAttente;
 
     Serveur(){
-        super(1500);
+        super(PORT_SERVER);
         personnesEnAttente=new HashMap<String, AdresseComplete>();
 
     }

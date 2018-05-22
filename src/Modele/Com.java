@@ -1,3 +1,5 @@
+package Modele;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -8,6 +10,7 @@ import java.util.Scanner;
 
 public class Com extends Util implements Runnable{
     private ArrayList<AdresseComplete> adresses;
+    private ArrayList<String> messages;
 
     public String getNomSalle() {
         return nomSalle;
@@ -18,14 +21,10 @@ public class Com extends Util implements Runnable{
     public Com(){
         super();
         adresses=new ArrayList<>();
+        messages=new ArrayList<>();
     }
 
-    public Com(DatagramSocket dsInput, String nomSalleInput){
-        ds=dsInput;
-        adresses=new ArrayList<>();
-        nomSalle=nomSalleInput;
-        new Thread().start();
-    }
+
 
     @Override
     public void run() {
@@ -42,8 +41,8 @@ public class Com extends Util implements Runnable{
                 case RQ_CONNEXION_DEMANDE_TO_HOST:
                     InetAddress ipRecue=dp.getAddress();
                     int portRecue= dp.getPort();
-                    System.out.println("Accepter connexion a "+nomSalle+" au client "
-                            +"{ ip="+ipRecue+" ,port="+portRecue);
+//                    System.out.println("Accepter connexion a "+nomSalle+" au client "
+//                            +"{ ip="+ipRecue+" ,port="+portRecue);
 
                 case RQ_ADD_ADRESS:
                     addAdresse(dp);
@@ -51,14 +50,18 @@ public class Com extends Util implements Runnable{
                             +" "+adresses.get(adresses.size()-1).toString());
                     break;
                 case RQ_COM_MESSAGE:
-                    String message= scan.next();
+                    String message= str.substring(1);
                     System.out.println(message);
+                    messages.add(message);
                     break;
             }
         }
     }
 
     public void sendAll(String message){
+        messages.add(message); //enregistre le message
+
+        message=RQ_COM_MESSAGE+" "+message;
         for(AdresseComplete adresse:
                 adresses){
             envoyer(message,adresse.ip,adresse.port);
@@ -119,8 +122,17 @@ public class Com extends Util implements Runnable{
         envoyer(requete,ipHote,portHote);
     }
 
+    public String[] derniersMessages(int nbMessages){
+        int l=messages.size();
 
-
+        if(l<=nbMessages){
+            return messages.toArray(new String[0]);
+        }
+        else{
+            String[] resultat= (messages.subList(l - nbMessages, l)).toArray(new String[0]);  //crée un tableau des derniers messages
+            return resultat;
+        }
+    }
 
 
 }
