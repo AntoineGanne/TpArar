@@ -50,7 +50,7 @@ public class Com extends Util implements Runnable{
                             +" "+adresses.get(adresses.size()-1).toString());
                     break;
                 case RQ_COM_MESSAGE:
-                    String message= scan.next();
+                    String message= str.substring(1);
                     System.out.println(message);
                     messages.add(message);
                     break;

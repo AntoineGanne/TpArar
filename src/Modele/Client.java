@@ -14,7 +14,6 @@ public class Client extends Observable {
     public Client(){
         scannerConsole=new Scanner(System.in);
         salles=new HashMap<>(0);
-        currentCommunication=new Com();
     }
 
     public static void main(String[] args) {
@@ -62,6 +61,7 @@ public class Client extends Observable {
         communication.connexion(ipServer,nomSalle);
 
         salles.put(nomSalle,communication);
+        currentCommunication=communication;
     }
 
     public String[] getDerniersMessages(String nomSalle, int nbMessages){

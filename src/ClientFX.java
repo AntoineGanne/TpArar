@@ -62,6 +62,7 @@ public class ClientFX extends Application implements Observer {
         pasDeMessage.setFont(fontTitres);
        // zoneMessages=new TextFlow(pasDeMessage);
         gpZoneMessage=new GridPane();
+        gpZoneMessage.setGridLinesVisible(true);
 
         border=new BorderPane();
         border.setCenter(gpZoneMessage);
@@ -158,6 +159,7 @@ public class ClientFX extends Application implements Observer {
     }
 
     public void miseAJour(){
+        gpZoneMessage.getChildren().clear();
         String[] messages=modeleClient.getDerniersMessages(NomSalleActuelle,5);
         Label[] labels=new Label[messages.length];
         for(int i=0;i<messages.length;i++){
